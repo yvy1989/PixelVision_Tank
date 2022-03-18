@@ -1,0 +1,17 @@
+{
+    "name":"PV8System",
+    "description":"A PV8 Game Template.",
+    "version":"v1.0.18",
+    "ext":".pv8",
+    "gpuChip":"PV8",
+    "cartChip":"PV8",
+    "soundChip":"PV8",
+    "runnerType":"lua",
+    "buildWin":"false",
+    "buildExtras":"",
+    "buildMac":"false",
+    "buildLinux":"false",
+    "paletteMode":"false",
+    "includeLibs":"",
+    
+}
