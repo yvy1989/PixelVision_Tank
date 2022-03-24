@@ -7,19 +7,19 @@ local message = "EMPTY LUA GAME\n\n\nThis is an empty game template.\n\n\nVisit 
 
 local px1 = 67
 local py1 = 69
-local sprite1 = 0
+local sprite1 = 2
 
 local px2 = 74
 local py2 = 69
-local sprite2 = 1
+local sprite2 = 3
 
 local px3 = 67
 local py3 = 76
-local sprite3 = 16
+local sprite3 = 18
 
 local px4 = 74
 local py4 = 76
-local sprite4 = 17
+local sprite4 = 19
 
 
 local dx = 0;
