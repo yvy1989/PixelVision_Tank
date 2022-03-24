@@ -6,7 +6,7 @@
     "DisplayChip":
     {
         "width":256,
-        "height":240,
+        "height":256,
         
     },
     "ControllerChip":
