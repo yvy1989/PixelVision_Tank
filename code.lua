@@ -21,7 +21,6 @@ local px4 = 74
 local py4 = 76
 local sprite4 = 17
 
-local gravity = 0.0002
 
 local dx = 0;
 local dy = 0;
