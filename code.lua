@@ -1,13 +1,53 @@
 
 
  
-local message = "EMPTY LUA GAME\n\n\nThis is an empty game template.\n\n\nVisit 'www.pixelvision8.com' to learn more about creating games from scratch."
+
+
+ 
+local message = "EMPTY LUA \n\n\nThis is an empty  template.\n\n\nVisit 'www.pixelvision8.com' to learn more about creating games from scratch."
+
+Player1_Positions = {
+  player_up = {
+    sprite1 = 2,
+    sprite2 = 3,
+    sprite3 = 18,
+    sprite4 = 19
+  },
+  player_down = {
+    sprite1 = 8,
+    sprite2 = 9,
+    sprite3 = 24,
+    sprite4 = 25
+  },
+  player_left = {
+    sprite1 = 4,
+    sprite2 = 5,
+    sprite3 = 20,
+    sprite4 = 21
+  },
+  player_right = {
+    sprite1 = 12,
+    sprite2 = 13,
+    sprite3 = 28,
+    sprite4 = 29
+  }
+}
+
+player_up = {
+  sprite1 = 2,
+  sprite2 = 3,
+  sprite3 = 18,
+  sprite4 = 19
+}
+
+
+Player1_Orientation = "up" -- variavel que guarda a direcao do player1
 
 
 
-local px1 = 67
-local py1 = 69
-local sprite1 = 2
+local px1 = 67 
+local py1 = 69 
+local sprite1 = 2 
 
 local px2 = 74
 local py2 = 69
@@ -50,10 +90,40 @@ function Draw() -- redesenha
 
   RedrawDisplay()--apaga a tela e redesenha o tilemap
   
-  DrawSprite(sprite1,px1,py1,false,false,DrawMode.Sprite)
-  DrawSprite(sprite2,px2,py2,false,false,DrawMode.Sprite)
-  DrawSprite(sprite3,px3,py3,false,false,DrawMode.Sprite)
-  DrawSprite(sprite4,px4,py4,false,false,DrawMode.Sprite)
+  if Player1_Orientation == "down"
+  then 
+    DrawSprite(Player1_Positions.player_down.sprite1,px1,py1,false,false,DrawMode.Sprite)
+    DrawSprite(Player1_Positions.player_down.sprite2,px2,py2,false,false,DrawMode.Sprite)
+    DrawSprite(Player1_Positions.player_down.sprite3,px3,py3,false,false,DrawMode.Sprite)
+    DrawSprite(Player1_Positions.player_down.sprite4,px4,py4,false,false,DrawMode.Sprite)  
+  end
+
+  if Player1_Orientation == "up"
+  then 
+    DrawSprite(Player1_Positions.player_up.sprite1,px1,py1,false,false,DrawMode.Sprite)
+    DrawSprite(Player1_Positions.player_up.sprite2,px2,py2,false,false,DrawMode.Sprite)
+    DrawSprite(Player1_Positions.player_up.sprite3,px3,py3,false,false,DrawMode.Sprite)
+    DrawSprite(Player1_Positions.player_up.sprite4,px4,py4,false,false,DrawMode.Sprite)  
+  end
+
+  if Player1_Orientation == "left"
+  then 
+    DrawSprite(Player1_Positions.player_left.sprite1,px1,py1,false,false,DrawMode.Sprite)
+    DrawSprite(Player1_Positions.player_left.sprite2,px2,py2,false,false,DrawMode.Sprite)
+    DrawSprite(Player1_Positions.player_left.sprite3,px3,py3,false,false,DrawMode.Sprite)
+    DrawSprite(Player1_Positions.player_left.sprite4,px4,py4,false,false,DrawMode.Sprite)  
+  end
+
+  if Player1_Orientation == "right"
+  then 
+    DrawSprite(Player1_Positions.player_right.sprite1,px1,py1,false,false,DrawMode.Sprite)
+    DrawSprite(Player1_Positions.player_right.sprite2,px2,py2,false,false,DrawMode.Sprite)
+    DrawSprite(Player1_Positions.player_right.sprite3,px3,py3,false,false,DrawMode.Sprite)
+    DrawSprite(Player1_Positions.player_right.sprite4,px4,py4,false,false,DrawMode.Sprite)  
+  end
+
+  
+  
 
 end
 
@@ -62,11 +132,28 @@ function control_check()
   dx *=friccao
   dy *=friccao
 
-  if Button(Buttons.Right) then dx += aceleracao end
-  if Button(Buttons.Left) then dx -= aceleracao end
+  if Button(Buttons.Right) then 
+    dx += aceleracao 
+    Player1_Orientation = "right"
+  end
 
-  if Button(Buttons.Up) then dy -= aceleracao end
-  if Button(Buttons.Down) then dy += aceleracao end
+
+  if Button(Buttons.Left) then 
+    dx -= aceleracao 
+    Player1_Orientation = "left"
+  end
+
+
+  if Button(Buttons.Up) then 
+    dy -= aceleracao 
+    Player1_Orientation = "up"
+  end
+
+
+  if Button(Buttons.Down) 
+  then dy += aceleracao 
+    Player1_Orientation = "down"
+  end
 
   px1 += dx
   px2 += dx
@@ -79,4 +166,6 @@ function control_check()
   py4 += dy
 
 end
+
+
 
