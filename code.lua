@@ -1,20 +1,16 @@
 
 
  
-
+LoadScript("basic_physics")
 
  
 local message = "EMPTY LUA \n\n\nThis is an empty  template.\n\n\nVisit 'www.pixelvision8.com' to learn more about creating games from scratch."
-
-
-
 
 
 Player1_Orientation = "up" -- variavel que guarda a direcao do player1
 
 local px = 67 
 local py = 69 
-
 
 local Player1_dx = 0;
 local Player1_dy = 0;
@@ -41,7 +37,7 @@ end
 
 function Draw() -- redesenha
 
-  DrawText("Flag " .. Flag(px, py), 10, 50, DrawMode.Sprite, "large", 15)
+  DrawText("Flag " .. Flag(px/8, py/8), 10, 50, DrawMode.Sprite, "large", 15)
 
   RedrawDisplay()--apaga a tela e redesenha o tilemap
   
