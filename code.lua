@@ -10,8 +10,7 @@ local py = 69
 
 local Player1_dx = 0;
 local Player1_dy = 0;
-local Player1_friccao = 0.8
-local Player1_aceleracao = 0.4
+
 
 
 
@@ -39,63 +38,62 @@ function Draw() -- redesenha
   
   DrawMetaSprite("tank_" .. Player1_Orientation,px,py,false,false,DrawMode.Sprite)
 
-  
 
 end
 
 
 function control_check()
-  Player1_dx *=Player1_friccao
-  Player1_dy *=Player1_friccao
 
-  
 
   if Button(Buttons.Right) then
-
+    
     Player1_Orientation = "right"
     if physics_check_hit_box(px,py,16,16,Player1_Orientation,0) then
       Player1_dx=0
     else
-      Player1_dx += Player1_aceleracao 
+      Player1_dx = 1 
     end
-     
-  end
 
-
-  if Button(Buttons.Left) then 
-
+  elseif Button(Buttons.Left) then
+    
     Player1_Orientation = "left"
     if physics_check_hit_box(px,py,16,16,Player1_Orientation,0) then
       Player1_dx=0
     else
-      Player1_dx -= Player1_aceleracao 
+      Player1_dx = -1
     end
 
-  end
-
-
-  if Button(Buttons.Up) then 
+  elseif Button(Buttons.Up) then
     
     Player1_Orientation = "up"
     if physics_check_hit_box(px,py,16,16,Player1_Orientation,0) then
       Player1_dy=0
     else
-      Player1_dy -= Player1_aceleracao 
+      Player1_dy = -1
     end
 
-  end
-
-
-  if Button(Buttons.Down) then 
+  elseif Button(Buttons.Down) then
     
     Player1_Orientation = "down"
     if physics_check_hit_box(px,py,16,16,Player1_Orientation,0) then
       Player1_dy=0
     else
-      Player1_dy += Player1_aceleracao 
+      Player1_dy = 1
     end
 
+  else
+
+    Player1_dx=0
+    Player1_dy=0
+
   end
+
+  
+  if (Button(Buttons.Right) and Button(Buttons.Up)) or (Button(Buttons.Left) and Button(Buttons.Up)) or (Button(Buttons.Down) and Button(Buttons.Left)) or (Button(Buttons.Down) and Button(Buttons.Right))    then
+    Player1_dx=0
+    Player1_dy=0
+  end
+
 
   px += Player1_dx
   py += Player1_dy
