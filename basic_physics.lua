@@ -13,11 +13,11 @@ function basic_physics.apply_gravity(val)
     return result
 end
 
-function basic_physics.check_hit_box(obj, aim, flag)
-    local x = obj.x
-    local y = obj.y
-    local w = obj.w
-    local h = obj.h
+function basic_physics.check_hit_box(p_x,p_y,w,h, aim, flag)
+    local x = p_x
+    local y = p_y
+    local w = w
+    local h = h
     
     local x1 = 0.0
     local x2 = 0.0
