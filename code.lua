@@ -1,15 +1,23 @@
 
- 
-local message = "EMPTY LUA \n\n\nThis is an empty  template.\n\n\nVisit 'www.pixelvision8.com' to learn more about creating games from scratch."
+
+player1 = {
+  orientation = "up",
+  px = 0,
+  py = 0,
+  dx = 0,
+  dy = 0,
+  w = 16,
+  h = 16,
+  isFire = false, -- teste
+  isDead = false
+}
 
 
-Player1_Orientation = "up" -- variavel que guarda a direcao do player1
 
-local px = 67 
-local py = 69 
-
-local Player1_dx = 0;
-local Player1_dy = 0;
+function player1.init()
+  player1.px = 67
+  player1.py = 69
+end
 
 
 
@@ -17,27 +25,67 @@ local Player1_dy = 0;
 
 function Init() --igual ao start unity
 
-  BackgroundColor( 5 )-- pega a cor de id 5 na paleta colors.png
+  BackgroundColor( 0 )-- pega a cor de id 0 na paleta colors.png
   LoadTilemap('tilemap-0')
 
+  player1.init()
+  
+  player1_bullets = {}
+  
 end
+
 
 
 function Update(timeDelta)-- update unity
 
+  for i,b in ipairs(player1_bullets) do
+    if(b.orientation=="right") then
+      b.x+=b.vel
+    end
+    if(b.orientation=="left") then
+      b.x-=b.vel
+    end
+    if(b.orientation=="up") then
+      b.y-=b.vel
+    end
+    if(b.orientation=="down") then
+      b.y+=b.vel
+    end   
+  end
+
   control_check()
+
+  if Button(Buttons.A) then
+    fire()
+  end
+  
+end
+
+function fire()
+	local b = {
+		x = player1.px,
+		y = player1.py,
+    orientation = player1.orientation,
+		vel = 0.5
+	}
+
+	table.insert(player1_bullets,b)
 
 end
 
-
 function Draw() -- redesenha
 
-  DrawText("Flag " .. Flag(px/8, py/8), 10, 50, DrawMode.Sprite, "large", 15)
+  --DrawText("Flag " .. Flag(player1.px/8, player1.py/8), 10, 50, DrawMode.Sprite, "large", 15)
+  DrawText("esta atirando", 10, 40, DrawMode.Sprite, "large", 15)
+  DrawText(player1.isFire, 10, 50, DrawMode.Sprite, "large", 15)
 
   RedrawDisplay()--apaga a tela e redesenha o tilemap
   
-  DrawMetaSprite("tank_" .. Player1_Orientation,px,py,false,false,DrawMode.Sprite)
+  DrawMetaSprite("tank_" .. player1.orientation,player1.px,player1.py,false,false,DrawMode.Sprite)
 
+  for i,b in ipairs(player1_bullets) do
+    DrawMetaSprite("bullet_" .. b.orientation,b.x,b.y,false,false,DrawMode.Sprite)
+  end
 
 end
 
@@ -47,56 +95,56 @@ function control_check()
 
   if Button(Buttons.Right) then
     
-    Player1_Orientation = "right"
-    if physics_check_hit_box(px,py,16,16,Player1_Orientation,0) then
-      Player1_dx=0
+    player1.orientation = "right"
+    if physics_check_hit_box(player1.px,player1.py,player1.w,player1.h,player1.orientation,0) then
+      player1.dx=0
     else
-      Player1_dx = 1 
+      player1.dx = 1 
     end
 
   elseif Button(Buttons.Left) then
     
-    Player1_Orientation = "left"
-    if physics_check_hit_box(px,py,16,16,Player1_Orientation,0) then
-      Player1_dx=0
+    player1.orientation = "left"
+    if physics_check_hit_box(player1.px,player1.py,player1.w,player1.h,player1.orientation,0) then
+      player1.dx=0
     else
-      Player1_dx = -1
+      player1.dx = -1
     end
 
   elseif Button(Buttons.Up) then
     
-    Player1_Orientation = "up"
-    if physics_check_hit_box(px,py,16,16,Player1_Orientation,0) then
-      Player1_dy=0
+    player1.orientation = "up"
+    if physics_check_hit_box(player1.px,player1.py,player1.w,player1.h,player1.orientation,0) then
+      player1.dy = 0
     else
-      Player1_dy = -1
+      player1.dy = -1
     end
 
   elseif Button(Buttons.Down) then
     
-    Player1_Orientation = "down"
-    if physics_check_hit_box(px,py,16,16,Player1_Orientation,0) then
-      Player1_dy=0
+    player1.orientation = "down"
+    if physics_check_hit_box(player1.px,player1.py,player1.w,player1.h,player1.orientation,0) then
+      player1.dy = 0
     else
-      Player1_dy = 1
+      player1.dy = 1
     end
 
   else
 
-    Player1_dx=0
-    Player1_dy=0
+    player1.dx = 0
+    player1.dy = 0
 
   end
 
   
   if (Button(Buttons.Right) and Button(Buttons.Up)) or (Button(Buttons.Left) and Button(Buttons.Up)) or (Button(Buttons.Down) and Button(Buttons.Left)) or (Button(Buttons.Down) and Button(Buttons.Right))    then
-    Player1_dx=0
-    Player1_dy=0
+    player1.dx = 0
+    player1.dy = 0
   end
 
 
-  px += Player1_dx
-  py += Player1_dy
+  player1.px += player1.dx
+  player1.py += player1.dy
 
 
 end
