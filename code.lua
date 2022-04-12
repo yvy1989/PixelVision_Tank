@@ -20,7 +20,7 @@ function player1.init()
 end
 
 
-local delay = 2000
+local delay = 2000 -- delay para atirar
 
 
 function Init() --igual ao start unity
@@ -30,16 +30,35 @@ function Init() --igual ao start unity
 
   player1.init()
   
-  player1_bullets = {}
+  player1_bullets = {} -- lista onde vao ficar armazenadas a lista de balas
   
 end
 
 
-
 function Update(timeDelta)-- update unity
-  delay = delay + timeDelta
 
+  delay = delay + timeDelta-- incremento do delay com o tempo de jogo para dar o tiro
 
+  upgrade_and_check_bullets()
+
+  control_check()
+
+end
+
+function fire()
+	local b = {
+		x = player1.px,
+		y = player1.py,
+    orientation = player1.orientation,
+		vel = 0.5,
+    isCollide = false
+	}
+
+	table.insert(player1_bullets,b)
+
+end
+
+function upgrade_and_check_bullets()
   for i,b in ipairs(player1_bullets) do
     if(b.orientation=="right") and b.isCollide == false then
       b.x+=b.vel
@@ -59,31 +78,6 @@ function Update(timeDelta)-- update unity
       b.isCollide = true
     end
   end
-
-  control_check()
-
-  if Button(Buttons.A) and delay >= 2000 then
-
-    delay = 0;
-    PlaySound(2)
-    fire()
-  end
-
-
-  
-end
-
-function fire()
-	local b = {
-		x = player1.px,
-		y = player1.py,
-    orientation = player1.orientation,
-		vel = 0.5,
-    isCollide = false
-	}
-
-	table.insert(player1_bullets,b)
-
 end
 
 function Draw() -- redesenha
@@ -105,6 +99,11 @@ end
 
 function control_check()
 
+  if Button(Buttons.A) and delay >= 2000 then -- tiro do player1
+    delay = 0;
+    PlaySound(2)
+    fire()
+  end
 
   if Button(Buttons.Right) then
     
