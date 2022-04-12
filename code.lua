@@ -39,23 +39,29 @@ end
 function Update(timeDelta)-- update unity
 
   for i,b in ipairs(player1_bullets) do
-    if(b.orientation=="right") then
+    if(b.orientation=="right") and b.isCollide == false then
       b.x+=b.vel
     end
-    if(b.orientation=="left") then
+    if(b.orientation=="left") and b.isCollide == false then
       b.x-=b.vel
     end
-    if(b.orientation=="up") then
+    if(b.orientation=="up") and b.isCollide == false then
       b.y-=b.vel
     end
-    if(b.orientation=="down") then
+    if(b.orientation=="down") and b.isCollide == false then
       b.y+=b.vel
     end   
+    if physics_check_hit_box(b.x,b.y,2,2,b.orientation,0) and b.isCollide == false then
+      DrawMetaSprite("shoot_collision",b.x,b.y,false,false,DrawMode.Sprite)
+      PlaySound(1)
+      b.isCollide = true
+    end
   end
 
   control_check()
 
   if Button(Buttons.A) then
+    PlaySound(2)
     fire()
   end
   
@@ -66,7 +72,8 @@ function fire()
 		x = player1.px,
 		y = player1.py,
     orientation = player1.orientation,
-		vel = 0.5
+		vel = 0.5,
+    isCollide = false
 	}
 
 	table.insert(player1_bullets,b)
