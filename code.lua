@@ -20,7 +20,7 @@ function player1.init()
 end
 
 
-
+local delay = 2000
 
 
 function Init() --igual ao start unity
@@ -37,6 +37,8 @@ end
 
 
 function Update(timeDelta)-- update unity
+  delay = delay + timeDelta
+
 
   for i,b in ipairs(player1_bullets) do
     if(b.orientation=="right") and b.isCollide == false then
@@ -60,10 +62,14 @@ function Update(timeDelta)-- update unity
 
   control_check()
 
-  if Button(Buttons.A) then
+  if Button(Buttons.A) and delay >= 2000 then
+
+    delay = 0;
     PlaySound(2)
     fire()
   end
+
+
   
 end
 
@@ -83,8 +89,8 @@ end
 function Draw() -- redesenha
 
   --DrawText("Flag " .. Flag(player1.px/8, player1.py/8), 10, 50, DrawMode.Sprite, "large", 15)
-  DrawText("esta atirando", 10, 40, DrawMode.Sprite, "large", 15)
-  DrawText(player1.isFire, 10, 50, DrawMode.Sprite, "large", 15)
+  --DrawText(tostring(delay), 10, 40, DrawMode.Sprite, "large", 15)
+  --DrawText(tostring(nextFire), 10, 50, DrawMode.Sprite, "large", 15)
 
   RedrawDisplay()--apaga a tela e redesenha o tilemap
   
