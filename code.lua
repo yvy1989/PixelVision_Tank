@@ -60,28 +60,33 @@ end
 
 function upgrade_and_check_bullets()
   for i,b in ipairs(player1_bullets) do
-    if(b.orientation=="right") and b.isCollide == false then
+    if(b.orientation=="right") then
       b.x+=b.vel
     end
-    if(b.orientation=="left") and b.isCollide == false then
+    if(b.orientation=="left") then
       b.x-=b.vel
     end
-    if(b.orientation=="up") and b.isCollide == false then
+    if(b.orientation=="up") then
       b.y-=b.vel
     end
-    if(b.orientation=="down") and b.isCollide == false then
+    if(b.orientation=="down") then
       b.y+=b.vel
-    end   
-    if physics_check_hit_box(b.x,b.y,2,2,b.orientation,0) and b.isCollide == false then
+    end 
+    
+
+    
+    if physics_check_hit_box(b.x,b.y,8,8,b.orientation,0) then
       DrawMetaSprite("shoot_collision",b.x,b.y,false,false,DrawMode.Sprite)
       PlaySound(1)
-      b.isCollide = true
+      table.remove(player1_bullets,i) -- remove a bala da lista e do jogo
+      
     end
   end
 end
 
 function Draw() -- redesenha
 
+  
   --DrawText("Flag " .. Flag(player1.px/8, player1.py/8), 10, 50, DrawMode.Sprite, "large", 15)
   --DrawText(tostring(delay), 10, 40, DrawMode.Sprite, "large", 15)
   --DrawText(tostring(nextFire), 10, 50, DrawMode.Sprite, "large", 15)
@@ -93,6 +98,8 @@ function Draw() -- redesenha
   for i,b in ipairs(player1_bullets) do
     DrawMetaSprite("bullet_" .. b.orientation,b.x,b.y,false,false,DrawMode.Sprite)
   end
+
+  
 
 end
 
