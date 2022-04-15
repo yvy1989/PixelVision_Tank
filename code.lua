@@ -1,3 +1,6 @@
+LoadScript("map-generator")
+
+
 
 
 player1 = {
@@ -14,7 +17,7 @@ player1 = {
 
 
 
-function player1.init()
+function player1_init()
   player1.px = 67
   player1.py = 69
 end
@@ -28,9 +31,24 @@ function Init() --igual ao start unity
   BackgroundColor( 0 )-- pega a cor de id 0 na paleta colors.png
   LoadTilemap('tilemap-0')
 
-  player1.init()
+  player1_init()
   
   player1_bullets = {} -- lista onde vao ficar armazenadas a lista de balas
+
+  
+  -- cham a funcao de aleatorizar os tiles no mapa recebe o nome do sprite e qntas vezes vai ser spawnada
+  level_generate(64,0,5)
+  --level_generate("grama",5) 
+
+ 
+
+  ----DEBUG AREA
+
+  DrawText("Flag()", 8, 8, DrawMode.TilemapCache, "large", 15)
+  DrawText("Lua Example", 8, 16, DrawMode.TilemapCache, "medium", 15, -4)
+  ----
+
+  
   
 end
 
@@ -42,6 +60,8 @@ function Update(timeDelta)-- update unity
   upgrade_and_check_bullets()
 
   control_check()
+
+
 
 end
 
@@ -57,6 +77,8 @@ function fire()
 	table.insert(player1_bullets,b)
 
 end
+
+
 
 function upgrade_and_check_bullets()
   for i,b in ipairs(player1_bullets) do
@@ -77,6 +99,11 @@ function upgrade_and_check_bullets()
     
     if physics_check_hit_box(b.x,b.y,8,8,b.orientation,0) then
       DrawMetaSprite("shoot_collision",b.x,b.y,false,false,DrawMode.Sprite)
+      
+      tilePosition_x = math.floor(b.x / 8)
+      tilePosition_y = math.floor(b.y / 8)
+      map_level[tilePosition_x+1][tilePosition_y+1] = create_tile(88, -1)
+      
       PlaySound(1)
       table.remove(player1_bullets,i) -- remove a bala da lista e do jogo
       
@@ -84,12 +111,31 @@ function upgrade_and_check_bullets()
   end
 end
 
+
+
 function Draw() -- redesenha
 
+  ---DEBUG AREA---
+
+
+
+  -- Redraws the display
+  RedrawDisplay()
+
+  draw_level()
+
+  -- Display the tile and flag text on the screen
+
+
+  -- Draw a rect to represent which tile the mouse is over and set the color to match the flag ID plus 1
+
   
-  --DrawText("Flag " .. Flag(player1.px/8, player1.py/8), 10, 50, DrawMode.Sprite, "large", 15)
+  --DrawText(math.floor(100/8), 10, 50, DrawMode.Sprite, "large", 15)
   --DrawText(tostring(delay), 10, 40, DrawMode.Sprite, "large", 15)
   --DrawText(tostring(nextFire), 10, 50, DrawMode.Sprite, "large", 15)
+
+
+  --------------------------------------------------------------------------------------------------
 
   RedrawDisplay()--apaga a tela e redesenha o tilemap
   
@@ -99,9 +145,17 @@ function Draw() -- redesenha
     DrawMetaSprite("bullet_" .. b.orientation,b.x,b.y,false,false,DrawMode.Sprite)
   end
 
-  
+
+  -- for i,n in ipairs(map_level) do 
+  --   for j,m in ipairs(n) do 
+  --     DrawMetaSprite(m.name,m.x,m.y,false,false,DrawMode.Sprite) -- chamada p daesenho do mapa em tempo real
+  --   end
+  -- end
+
+
 
 end
+
 
 
 function control_check()
@@ -142,7 +196,7 @@ function control_check()
   elseif Button(Buttons.Down) then
     
     player1.orientation = "down"
-    if physics_check_hit_box(player1.px,player1.py,player1.w,player1.h,player1.orientation,0) then
+    if physics_check_hit_box(player1.px,player1.py,player1.w,player1.h,player1.orientation,0)  then
       player1.dy = 0
     else
       player1.dy = 1
@@ -212,6 +266,12 @@ function physics_check_hit_box(p_x,p_y,w,h, aim, flag)
   y1 /= 8
   y2 /= 8
 
+  print("("..x1 .. " ".. y1..")")
+  print("("..x1 .. " ".. y2..")")
+  print("("..x2 .. " ".. y1..")")
+  print("("..x2 .. " ".. y2..")")
+  
+  
   if Flag(x1, y1) == flag
   or Flag(x1, y2) == flag
   or Flag(x2, y1) == flag
