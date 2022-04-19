@@ -23,7 +23,7 @@ function player1_init()
 end
 
 
-local delay = 2000 -- delay para atirar
+local delay = 1500 -- delay para atirar - firerate
 
 
 function Init() --igual ao start unity
@@ -102,7 +102,21 @@ function upgrade_and_check_bullets()
       
       tilePosition_x = math.floor(b.x / 8)
       tilePosition_y = math.floor(b.y / 8)
-      map_level[tilePosition_x+1][tilePosition_y+1] = create_tile(88, -1)
+
+      if(b.orientation=="right") then
+        map_level[tilePosition_x+1][tilePosition_y+1] = create_tile(88, -1)
+      end
+      if(b.orientation=="left") then
+        map_level[tilePosition_x-1][tilePosition_y+1] = create_tile(88, -1)
+      end
+      if(b.orientation=="up") then
+        map_level[tilePosition_x+1][tilePosition_y-1] = create_tile(88, -1)
+      end
+      if(b.orientation=="down") then
+        map_level[tilePosition_x+1][tilePosition_y+1] = create_tile(88, -1)
+      end 
+
+      
       
       PlaySound(1)
       table.remove(player1_bullets,i) -- remove a bala da lista e do jogo
