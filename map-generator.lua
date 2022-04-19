@@ -25,11 +25,21 @@ function level_generate(nomeTile, flag,_times) -- chamar no init uma unica vez
     end
 
     for i=0,_times,1 do
-        x = math.random(0, 256)
-        y = math.random(0, 256)
+        ::continue::
+
+        x = math.random(8, 235)
+        y = math.random(8, 235)
         
         x /= 8
         y /= 8
+
+        
+
+
+        if x>=12 and x<=21 and y>=26 then
+            goto continue
+            print("("..math.floor(x) .. " ".. math.floor(y)..")")
+        end
         map_level[math.floor(x)][math.floor(y)] = create_tile(nomeTile,flag)
         map_level[math.floor(x)+1][math.floor(y)] = create_tile(nomeTile,flag)
         map_level[math.floor(x)][math.floor(y)+1] = create_tile(nomeTile,flag)

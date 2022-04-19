@@ -36,19 +36,8 @@ function Init() --igual ao start unity
   player1_bullets = {} -- lista onde vao ficar armazenadas a lista de balas
 
   
-  -- cham a funcao de aleatorizar os tiles no mapa recebe o nome do sprite e qntas vezes vai ser spawnada
-  level_generate(64,0,5)
-  --level_generate("grama",5) 
-
- 
-
-  ----DEBUG AREA
-
-  DrawText("Flag()", 8, 8, DrawMode.TilemapCache, "large", 15)
-  DrawText("Lua Example", 8, 16, DrawMode.TilemapCache, "medium", 15, -4)
-  ----
-
-  
+  -- cham a funcao de aleatorizar os tiles no mapa recebe o ID, a flag de colisao do sprite e qntas vezes vai ser spawnada
+  level_generate(64,0,25)
   
 end
 
@@ -129,27 +118,11 @@ end
 
 function Draw() -- redesenha
 
-  ---DEBUG AREA---
 
-
-
-  -- Redraws the display
   RedrawDisplay()
 
   draw_level()
 
-  -- Display the tile and flag text on the screen
-
-
-  -- Draw a rect to represent which tile the mouse is over and set the color to match the flag ID plus 1
-
-  
-  --DrawText(math.floor(100/8), 10, 50, DrawMode.Sprite, "large", 15)
-  --DrawText(tostring(delay), 10, 40, DrawMode.Sprite, "large", 15)
-  --DrawText(tostring(nextFire), 10, 50, DrawMode.Sprite, "large", 15)
-
-
-  --------------------------------------------------------------------------------------------------
 
   RedrawDisplay()--apaga a tela e redesenha o tilemap
   
@@ -158,13 +131,6 @@ function Draw() -- redesenha
   for i,b in ipairs(player1_bullets) do
     DrawMetaSprite("bullet_" .. b.orientation,b.x,b.y,false,false,DrawMode.Sprite)
   end
-
-
-  -- for i,n in ipairs(map_level) do 
-  --   for j,m in ipairs(n) do 
-  --     DrawMetaSprite(m.name,m.x,m.y,false,false,DrawMode.Sprite) -- chamada p daesenho do mapa em tempo real
-  --   end
-  -- end
 
 
 
@@ -280,10 +246,10 @@ function physics_check_hit_box(p_x,p_y,w,h, aim, flag)
   y1 /= 8
   y2 /= 8
 
-  print("("..x1 .. " ".. y1..")")
-  print("("..x1 .. " ".. y2..")")
-  print("("..x2 .. " ".. y1..")")
-  print("("..x2 .. " ".. y2..")")
+  --print("("..x1 .. " ".. y1..")")
+  --print("("..x1 .. " ".. y2..")")
+  --print("("..x2 .. " ".. y1..")")
+  --print("("..x2 .. " ".. y2..")")
   
   
   if Flag(x1, y1) == flag
