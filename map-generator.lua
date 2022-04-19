@@ -33,12 +33,15 @@ function level_generate(nomeTile, flag,_times) -- chamar no init uma unica vez
         x /= 8
         y /= 8
 
-        
 
-
-        if x>=12 and x<=21 and y>=26 then
+        if x>=9 and x<=21 and y>=26  then -- verifica se esta na posicao onde fica a bandeira do player1 se sim volta e randomiza denovo
             goto continue
-            print("("..math.floor(x) .. " ".. math.floor(y)..")")
+            --print("("..math.floor(x) .. " ".. math.floor(y)..")")
+        end
+
+        if x>=9 and x<=21 and y<=6  then -- verifica se esta na posicao onde fica a bandeira do player2 se sim volta e randomiza denovo
+            goto continue
+            --print("("..math.floor(x) .. " ".. math.floor(y)..")")
         end
         map_level[math.floor(x)][math.floor(y)] = create_tile(nomeTile,flag)
         map_level[math.floor(x)+1][math.floor(y)] = create_tile(nomeTile,flag)
@@ -47,9 +50,6 @@ function level_generate(nomeTile, flag,_times) -- chamar no init uma unica vez
     end
     
 
-  
-    --table.insert(map_level,create_tile("agua",80)) -- cria um tile de agua a partir do tile 200
-
    
   
 end
@@ -57,9 +57,8 @@ end
 function draw_level()
     for i,n in ipairs(map_level) do 
         for j,m in ipairs(n) do 
-            --tilePosition_x = math.abs(m.x / 8)
-            --tilePosition_y = math.abs(m.y / 8)
             Tile ( i, j, m.name, 0, m.flag, false, false ) -- seta como obstaculo
+            --print("("..i .. " ".. j..")")
         end
     end
 end

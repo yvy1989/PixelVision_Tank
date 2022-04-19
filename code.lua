@@ -18,8 +18,8 @@ player1 = {
 
 
 function player1_init()
-  player1.px = 67
-  player1.py = 69
+  player1.px = 90
+  player1.py = 235
 end
 
 
@@ -37,7 +37,7 @@ function Init() --igual ao start unity
 
   
   -- cham a funcao de aleatorizar os tiles no mapa recebe o ID, a flag de colisao do sprite e qntas vezes vai ser spawnada
-  level_generate(64,0,25)
+  level_generate(64,0,80)
   
 end
 
@@ -111,6 +111,10 @@ function upgrade_and_check_bullets()
       table.remove(player1_bullets,i) -- remove a bala da lista e do jogo
       
     end
+    if physics_check_hit_box(b.x,b.y,8,8,b.orientation,1) then
+      PlaySound(1)
+      table.remove(player1_bullets,i)
+    end
   end
 end
 
@@ -133,7 +137,7 @@ function Draw() -- redesenha
   end
 
 
-
+  
 end
 
 
@@ -149,7 +153,7 @@ function control_check()
   if Button(Buttons.Right) then
     
     player1.orientation = "right"
-    if physics_check_hit_box(player1.px,player1.py,player1.w,player1.h,player1.orientation,0) then
+    if physics_check_hit_box(player1.px,player1.py,player1.w,player1.h,player1.orientation,0) or physics_check_hit_box(player1.px,player1.py,player1.w,player1.h,player1.orientation,1) then
       player1.dx=0
     else
       player1.dx = 1 
@@ -158,7 +162,7 @@ function control_check()
   elseif Button(Buttons.Left) then
     
     player1.orientation = "left"
-    if physics_check_hit_box(player1.px,player1.py,player1.w,player1.h,player1.orientation,0) then
+    if physics_check_hit_box(player1.px,player1.py,player1.w,player1.h,player1.orientation,0) or physics_check_hit_box(player1.px,player1.py,player1.w,player1.h,player1.orientation,1)  then
       player1.dx=0
     else
       player1.dx = -1
@@ -167,7 +171,7 @@ function control_check()
   elseif Button(Buttons.Up) then
     
     player1.orientation = "up"
-    if physics_check_hit_box(player1.px,player1.py,player1.w,player1.h,player1.orientation,0) then
+    if physics_check_hit_box(player1.px,player1.py,player1.w,player1.h,player1.orientation,0) or physics_check_hit_box(player1.px,player1.py,player1.w,player1.h,player1.orientation,1) then
       player1.dy = 0
     else
       player1.dy = -1
@@ -176,7 +180,7 @@ function control_check()
   elseif Button(Buttons.Down) then
     
     player1.orientation = "down"
-    if physics_check_hit_box(player1.px,player1.py,player1.w,player1.h,player1.orientation,0)  then
+    if physics_check_hit_box(player1.px,player1.py,player1.w,player1.h,player1.orientation,0) or physics_check_hit_box(player1.px,player1.py,player1.w,player1.h,player1.orientation,1) then
       player1.dy = 0
     else
       player1.dy = 1
