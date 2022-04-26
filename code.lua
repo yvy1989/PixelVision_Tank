@@ -243,7 +243,7 @@ function control_player1()------------------------------------------------------
   end
 
   
-  if (Button(Buttons.Right) and Button(Buttons.Up)) or (Button(Buttons.Left) and Button(Buttons.Up)) or (Button(Buttons.Down) and Button(Buttons.Left)) or (Button(Buttons.Down) and Button(Buttons.Right))    then
+  if (Key(Keys.D) and Key(Keys.W)) or (Key(Keys.A) and Key(Keys.W)) or (Key(Keys.S) and Key(Keys.A)) or (Key(Keys.S) and Key(Keys.D))    then
     player1.dx = 0
     player1.dy = 0
   end
