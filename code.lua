@@ -1,4 +1,5 @@
 LoadScript("map-generator")
+LoadScript("physics")
 
 
 
@@ -69,10 +70,12 @@ function Update(timeDelta)-- update unity
   delay2 = delay2 + timeDelta-- incremento do delay com o tempo de jogo para dar o tiro do P2
 
   upgrade_and_check_bullets(player1_bullets)
+
   upgrade_and_check_bullets(player2_bullets)
   
 
   control_check()
+
 
 
 
@@ -82,8 +85,8 @@ function fire(player)
 
   if player == "player1" then
     local b1 = {
-      x = player1.px,
-      y = player1.py,
+      px = player1.px,
+      py = player1.py,
       orientation = player1.orientation,
       vel = 0.5,
       isCollide = false
@@ -94,8 +97,10 @@ function fire(player)
 
   if player == "player2" then
     local b2 = {
-      x = player2.px,
-      y = player2.py,
+      px = player2.px,
+      py = player2.py,
+      h = 4,
+      w= 4,
       orientation = player2.orientation,
       vel = 0.5,
       isCollide = false
@@ -111,25 +116,30 @@ end
 function upgrade_and_check_bullets(bullets_List)
   for i,b in ipairs(bullets_List) do
     if(b.orientation=="right") then
-      b.x+=b.vel
+      b.px+=b.vel
     end
     if(b.orientation=="left") then
-      b.x-=b.vel
+      b.px-=b.vel
     end
     if(b.orientation=="up") then
-      b.y-=b.vel
+      b.py-=b.vel
     end
     if(b.orientation=="down") then
-      b.y+=b.vel
+      b.py+=b.vel
     end 
     
 
+    --todo colisao com o player------------------------
+    if basic_physics_box_cast(player1,b ) then
+      print("p1 colidiu com a bala")
+    end
+    ------------------------------------------
     
-    if physics_check_hit_box(b.x,b.y,8,8,b.orientation,0) then
-      DrawMetaSprite("shoot_collision",b.x,b.y,false,false,DrawMode.Sprite)
+    if physics_check_hit_box(b.px,b.py,8,8,b.orientation,0) then
+      DrawMetaSprite("shoot_collision",b.px,b.py,false,false,DrawMode.Sprite)
       
-      tilePosition_x = math.floor(b.x / 8)
-      tilePosition_y = math.floor(b.y / 8)
+      tilePosition_x = math.floor(b.px / 8)
+      tilePosition_y = math.floor(b.py / 8)
 
       if(b.orientation=="right") then
         map_level[tilePosition_x+1][tilePosition_y+1] = create_tile(88, -1)
@@ -150,7 +160,7 @@ function upgrade_and_check_bullets(bullets_List)
       table.remove(bullets_List,i) -- remove a bala da lista e do jogo
       
     end
-    if physics_check_hit_box(b.x,b.y,8,8,b.orientation,1) then
+    if physics_check_hit_box(b.px,b.py,8,8,b.orientation,1) then
       PlaySound(1)
       table.remove(bullets_List,i)
     end
@@ -174,11 +184,11 @@ function Draw() -- redesenha
   DrawMetaSprite("tank2_" .. player2.orientation,player2.px,player2.py,false,false,DrawMode.Sprite)
 
   for i,b in ipairs(player1_bullets) do
-    DrawMetaSprite("bullet_" .. b.orientation,b.x,b.y,false,false,DrawMode.Sprite)
+    DrawMetaSprite("bullet_" .. b.orientation,b.px,b.py,false,false,DrawMode.Sprite)
   end
 
   for i,b in ipairs(player2_bullets) do
-    DrawMetaSprite("bullet_" .. b.orientation,b.x,b.y,false,false,DrawMode.Sprite)
+    DrawMetaSprite("bullet_" .. b.orientation,b.px,b.py,false,false,DrawMode.Sprite)
   end
 
   
@@ -243,7 +253,7 @@ function control_player1()------------------------------------------------------
   end
 
   
-  if (Key(Keys.D) and Key(Keys.W)) or (Key(Keys.A) and Key(Keys.W)) or (Key(Keys.S) and Key(Keys.A)) or (Key(Keys.S) and Key(Keys.D))    then
+  if (Button(Buttons.Right) and Button(Buttons.Up)) or (Button(Buttons.Left) and Button(Buttons.Up)) or (Button(Buttons.Down) and Button(Buttons.Left)) or (Button(Buttons.Down) and Button(Buttons.Right))    then
     player1.dx = 0
     player1.dy = 0
   end
