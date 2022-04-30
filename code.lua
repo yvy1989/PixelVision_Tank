@@ -2,18 +2,18 @@ LoadScript("map-generator")
 LoadScript("physics")
 LoadScript("gameOver")
 
-isGameStarted = false
+isGameStarted = false -- verifica se o jogo comecou
 winer = nil -- variavel com o nome do ganhador
 
 
-posFlagPLayer1 = {
+posFlagPLayer1 = {--posicao da bandeira do player 1
   x=120,
   y=225,
   w = 40,
   h = 10
 }
 
-posFlagPLayer2 = {
+posFlagPLayer2 = {--posicao da bandeira do player 2
   x=120,
   y=20,
   w = 40,
@@ -66,7 +66,8 @@ end
 function Init() --igual ao start unity
   
   BackgroundColor( 0 )-- pega a cor de id 0 na paleta colors.png
-  LoadTilemap('tilemap-1')
+  LoadTilemap('tilemap-1') --carrega o tilemap do menu pcp
+  PlaySong ( 0, true )
   
 
 end
@@ -85,8 +86,9 @@ function startGame()
   player2_bullets = {} -- lista onde vao ficar armazenadas a lista de balas dp player2
   
   -- cham a funcao de aleatorizar os tiles no mapa recebe o ID, a flag de colisao do sprite e qntas vezes vai ser spawnada
-  level_generate(64,0,5)---colocar 50 na qtd de spawn
+  level_generate(64,0,45)---colocar 50 na qtd de spawn
 
+  PauseSong()
   isGameStarted = true
 end
 
@@ -119,6 +121,7 @@ function Update(timeDelta)-- update unity
   else
     if Key(Keys.Enter) then
       startGame()
+      --PlaySong ( 1, true )
     end
   end
 
@@ -234,17 +237,17 @@ end
 
 
 function Draw() -- redesenha
+  
   RedrawDisplay()
 
   
-
   if isGameStarted then
     draw_level()
     RedrawDisplay()--apaga a tela e redesenha o tilemap
   
-    DrawText("P2 Life = "..player2.life , 15, 15, DrawMode.TilemapCache, "large", 15, -2) --Player2 life
+    DrawText("P2 Life = "..player2.life , 15, 15, DrawMode.TilemapCache, "large", 9, -2) --Player2 life
 
-    DrawText("P1 Life = "..player1.life, 15, 239, DrawMode.TilemapCache, "large", 15, -2) --Player1 life
+    DrawText("P1 Life = "..player1.life, 15, 239, DrawMode.TilemapCache, "large", 10, -2) --Player1 life
 
 
     DrawMetaSprite("tank_" .. player1.orientation,player1.x,player1.y,false,false,DrawMode.Sprite)
