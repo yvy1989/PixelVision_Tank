@@ -5,6 +5,7 @@ function gameOver()
     
 
     if Key(Keys.R) then
+        isGameStarted = false
         Init()
     end
 end

@@ -2,8 +2,10 @@ LoadScript("map-generator")
 LoadScript("physics")
 LoadScript("gameOver")
 
-
+isGameStarted = false
 winer = nil -- variavel com o nome do ganhador
+
+
 posFlagPLayer1 = {
   x=120,
   y=225,
@@ -61,13 +63,19 @@ function player2_init()
 end
 
 
-
-
 function Init() --igual ao start unity
-  winer = nil
-
+  
   BackgroundColor( 0 )-- pega a cor de id 0 na paleta colors.png
+  LoadTilemap('tilemap-1')
+  
+
+end
+
+function startGame()
+
   LoadTilemap('tilemap-0')
+
+  winer = nil
   player1_init()
   
   player2_init()
@@ -78,33 +86,43 @@ function Init() --igual ao start unity
   
   -- cham a funcao de aleatorizar os tiles no mapa recebe o ID, a flag de colisao do sprite e qntas vezes vai ser spawnada
   level_generate(64,0,5)---colocar 50 na qtd de spawn
-  
+
+  isGameStarted = true
 end
 
 
 function Update(timeDelta)-- update unity
 
-  if winer==nil then --se o player colidiu com bala
-    delay = delay + timeDelta-- incremento do delay com o tempo de jogo para dar o tiro do P1
+  if isGameStarted then
+    if winer==nil then --se o player colidiu com bala
+      delay = delay + timeDelta-- incremento do delay com o tempo de jogo para dar o tiro do P1
+    
+      delay2 = delay2 + timeDelta-- incremento do delay com o tempo de jogo para dar o tiro do P2
+    
+      upgrade_and_check_bullets(player1_bullets)
+    
+      upgrade_and_check_bullets(player2_bullets)
+    
+      control_check()
   
-    delay2 = delay2 + timeDelta-- incremento do delay com o tempo de jogo para dar o tiro do P2
+      check_bullet_collision(player1,player2_bullets,"player2")
+    
+      check_bullet_collision(player2,player1_bullets,"player1")
   
-    upgrade_and_check_bullets(player1_bullets)
+      check_player_status()
   
-    upgrade_and_check_bullets(player2_bullets)
-  
-    control_check()
-
-    check_bullet_collision(player1,player2_bullets,"player2")
-  
-    check_bullet_collision(player2,player1_bullets,"player1")
-
-    check_player_status()
-
+    else
+      --print(winer)
+      gameOver()
+    end
+    
   else
-    --print(winer)
-    gameOver()
+    if Key(Keys.Enter) then
+      startGame()
+    end
   end
+
+  
 
 end
 
@@ -217,23 +235,29 @@ end
 
 function Draw() -- redesenha
   RedrawDisplay()
-  draw_level()
-  RedrawDisplay()--apaga a tela e redesenha o tilemap
+
   
-  DrawText("P2 Life = "..player2.life , 15, 15, DrawMode.TilemapCache, "large", 15, -2) --Player2 life
 
-  DrawText("P1 Life = "..player1.life, 15, 239, DrawMode.TilemapCache, "large", 15, -2) --Player1 life
+  if isGameStarted then
+    draw_level()
+    RedrawDisplay()--apaga a tela e redesenha o tilemap
+  
+    DrawText("P2 Life = "..player2.life , 15, 15, DrawMode.TilemapCache, "large", 15, -2) --Player2 life
+
+    DrawText("P1 Life = "..player1.life, 15, 239, DrawMode.TilemapCache, "large", 15, -2) --Player1 life
 
 
-  DrawMetaSprite("tank_" .. player1.orientation,player1.x,player1.y,false,false,DrawMode.Sprite)
-  DrawMetaSprite("tank2_" .. player2.orientation,player2.x,player2.y,false,false,DrawMode.Sprite)
-  for i,b in ipairs(player1_bullets) do
-    DrawMetaSprite("bullet_" .. b.orientation,b.x,b.y,false,false,DrawMode.Sprite)
+    DrawMetaSprite("tank_" .. player1.orientation,player1.x,player1.y,false,false,DrawMode.Sprite)
+    DrawMetaSprite("tank2_" .. player2.orientation,player2.x,player2.y,false,false,DrawMode.Sprite)
+    for i,b in ipairs(player1_bullets) do
+      DrawMetaSprite("bullet_" .. b.orientation,b.x,b.y,false,false,DrawMode.Sprite)
+    end
+    for i,b in ipairs(player2_bullets) do
+      DrawMetaSprite("bullet_" .. b.orientation,b.x,b.y,false,false,DrawMode.Sprite)
+    end
+  else
+    DrawText("Press ENTER to START  ", 58, 162,  DrawMode.UI, "large", 15, -1)
   end
-  for i,b in ipairs(player2_bullets) do
-    DrawMetaSprite("bullet_" .. b.orientation,b.x,b.y,false,false,DrawMode.Sprite)
-  end
-
   ----------------------DEBUG AREA-------------------------------
   ----------SHOW MOUSE POSITION-----------------------------------
   --pos = MousePosition()
